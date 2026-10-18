@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lab03a.css">
+    <title>JChen Exotic Pet Adoption!</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Pets</a></li>
+            <li><a href="">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <main> 
+        <!-- Background image of banner, "Adopt an Exotic pet!" -->
+         <!-- use combinator to get children of hero class to style -->
+        <section class="hero">
+            <h3>Adopt a</h3>
+            <!-- On hover switch from Capybara to Red Panda  -->
+            <h3 class="text-switch">Capybara!</h3>
+        </section>
+        
+        <section class="pet-catalogue">
+            <div class="pet-card">
+                <!--  css combinator a > img -->
+                  <!-- on hover expand div a bit -->
+                <a href="" class="pet-link">
+                    <img src="lab03media/capybara.png" alt="Capybara" class="pet-pic">
+                    <h3>Capybara</h3>
+                </a>
+                <p>Originating from South America, these semi-aquatic rodents are known for their docile nature and love of water.</p>
+            </div>
+            <div class="pet-card">
+                <a href="" class="pet-link">
+                    <img src="lab03media/redpanda.png" alt="Red Panda" class="pet-pic">
+                    <h3>Red Panda</h3>
+                </a>
+                <p>Native to the eastern Himalayas and parts of China, Red Pandas are solitary animals known for their distinctive reddish-brown fur and shy demeanor.</p>
+            </div>
+        </section>
+
+        <section class="call-to-action">
+            <h2>Interested? Send in your Email here!</h2>
+            <form>
+                <input type="email" placeholder="example@mail.com" required>
+            </form>
+            
+        </section>
+        <footer>
+            <!-- add a ::before on p, with the copyright logo -->
+            <p>Jason Chen 2026</p>
+        </footer>
+    </main>
+</body>
+</html>
