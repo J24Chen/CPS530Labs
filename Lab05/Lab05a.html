@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab05a Validation Form</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.7.1.js"></script> 
+    <script src="https://ihypress.de/programming/javascript/arctext.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+</head>
+
+
+<script>
+    function validateLetters(input) {
+        var regex = /^[A-Za-z\s]+$/;
+        return regex.test(input);
+    }
+
+    function validatePhone(input) {
+        var regex = /^\(\d{3}\) \d{3}-\d{4}$/;
+        return regex.test(input);
+    }
+
+    function convertPhoneNumber(input) {
+        //format as 123-123-1234
+        return input.replace(/^\((\d{3})\) (\d{3})-(\d{4})$/, "$1-$2-$3");
+    }
+
+
+    function validationForm(event) {
+        event.preventDefault(); // Prevent form submission
+        var name = document.forms[0].name.value;
+        var phone = document.forms[0].phone.value;
+        var address = document.forms[0].address.value;
+
+        if (name === "") {
+            alert("Name must be filled out");
+            return false;
+        }
+        if (!validateLetters(name)) {
+            alert("Name must contain only letters and spaces");
+            return false;
+        }
+        if (phone === "") {
+            alert("Phone must be filled out");
+            return false;
+        }
+        if (!validatePhone(phone)) {
+            alert("Phone must be in the format (123) 456-7890");
+            return false;
+        }
+
+        if (address === "") {
+            alert("Address must be filled out");
+            return false;
+        }
+
+        document.getElementById("result").textContent = name + " " + convertPhoneNumber(phone) + " " + address;
+        $('#result').arctext({radius: 600, dir: -1});
+        return true;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("form").addEventListener("submit", validationForm);
+    });
+
+</script>
+
+<body>
+    <form id = "form" action="#">
+        <p>Name:</p>
+        <input type="text" name="name" placeholder="Killua Chen">
+        <p>Phone:</p>
+        <input type="tel" placeholder="(123) 456-7890"name="phone"
+            title="Please include the exact format shown here: (123) 456-7890">
+        <p>Address:</p>
+        <input type="address" name="address" placeholder="123 Bay St">
+        <button type="submit">Submit</button>
+    </form>
+    <p id="result" style="font-family:'Concert One'; color:brown"></p>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.17.4/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin:0;
+        }
+
+    </style>
+</head>
+<body class="min-h-screen bg-[radial-gradient(ellipse_at_center,_#17243b_0%,_#180808_72%)] overflow-hidden flex flex-col justify-center items-center">
+    <h1 class="text-3xl font-bold text-white mb-4">Live Character Tracker!</h1>
+    <div x-data="{content: ''} ">
+        <textarea x-model="content" class="w-200 h-32 resize-none bg-gray-800 text-white placeholder:text-gray-500 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-sm"></textarea>
+        <p class="text-1xl text-white">Character Count: <span x-text="content.length"></span></p>
+    </div>
+    
+</body>
+</html>

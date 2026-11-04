@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 05c Jchen</title>
+
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+  <!-- Google Material Icons CDN -->
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #134e4a);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      gap: 24px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(1.7rem, 4vw, 2.8rem);
+      margin: 0;
+    }
+
+    .subtitle {
+      color: #cbd5e1;
+      text-align: center;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* Thumbnail */
+    .thumbnail {
+      width: min(100%, 360px);
+      aspect-ratio: 4 / 3;
+      position: relative;
+      padding: 0;
+      border: 3px solid #e2e8f0;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: zoom-in;
+      background: #1e293b;
+      box-shadow: 0 12px 40px #0005;
+      transition: transform 250ms ease, box-shadow 250ms ease;
+    }
+
+    .thumbnail:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px #0007;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .thumbnail-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 12px 14px;
+      text-align: left;
+      background: linear-gradient(transparent, #000c);
+      font-weight: bold;
+      color:white;
+    }
+
+    /* Full-screen overlay */
+    .viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgb(2 6 23 / 88%);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Expanded image container */
+    .expanded-image {
+      position: relative;
+      width: min(100%, 1100px);
+      height: min(78vh, 720px);
+      height: min(78dvh, 720px);
+      overflow: hidden;
+      border-radius: 22px;
+      border: 2px solid rgb(255 255 255 / 60%);
+      background: #0f172a;
+      box-shadow: 0 30px 100px #0008;
+      transform-origin: center;
+    }
+
+    .expanded-image > img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Centered description */
+    .image-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      background: linear-gradient(
+        to bottom,
+        rgb(0 0 0 / 10%),
+        rgb(0 0 0 / 20%) 35%,
+        rgb(0 0 0 / 45%)
+      );
+      pointer-events: none;
+    }
+
+    .description-card {
+      width: min(100%, 620px);
+      padding: 28px;
+      border: 1px solid rgb(255 255 255 / 25%);
+      border-radius: 18px;
+      background: rgb(15 23 42 / 72%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 35px #0003;
+    }
+
+    .description-card h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.6rem, 4vw, 3rem);
+    }
+
+    .description-card p {
+      margin: 0;
+      color: #f1f5f9;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      line-height: 1.7;
+    }
+
+    /* Close button: bottom-right */
+    .close-button {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 1px solid rgb(255 255 255 / 65%);
+      background: rgb(15 23 42 / 85%);
+      color: white;
+      cursor: pointer;
+      transition: background 200ms ease, transform 200ms ease;
+    }
+
+    .close-button:hover {
+      background: #dc2626;
+      transform: rotate(90deg);
+    }
+
+    .close-button .material-icons {
+      font-size: 30px;
+    }
+
+    .hint {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      text-align: center;
+    }
+
+    /* Vue transitions */
+    .viewer-enter-active,
+    .viewer-leave-active {
+      transition: opacity 350ms ease;
+    }
+
+    .viewer-enter-from,
+    .viewer-leave-to {
+      opacity: 0;
+    }
+
+    .zoom-enter-active,
+    .zoom-leave-active {
+      transition:
+        transform 400ms cubic-bezier(.2, .8, .2, 1),
+        opacity 400ms ease;
+    }
+
+    .zoom-enter-from {
+      opacity: 0;
+      transform: scale(0.65);
+    }
+
+    .zoom-leave-to {
+      opacity: 0;
+      transform: scale(0.75);
+    }
+
+    @media (max-width: 600px) {
+      .viewer {
+        padding: 12px;
+      }
+
+      .expanded-image {
+        height: 72vh;
+        height: 72dvh;
+        border-radius: 16px;
+      }
+
+      .description-card {
+        padding: 20px 16px;
+      }
+
+      .close-button {
+        width: 48px;
+        height: 48px;
+        right: 12px;
+        bottom: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <main class="app">
+      <h1>Vue 3 Image Explorer</h1>
+
+
+      <!-- Clickable thumbnail -->
+      <button
+        class="thumbnail"
+        type="button"
+        @click="openImage"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+          alt="A Cat!"
+        />
+
+        <span class="thumbnail-label">
+            Click me! ↗
+        </span>
+      </button>
+
+      <p class="hint">Select the image to expand it.</p>
+
+      <!-- Animated expanded viewer -->
+      <Transition name="viewer">
+        <div
+          v-if="isExpanded"
+          class="viewer"
+          @click.self="closeImage"
+          @keydown.esc="closeImage"
+        >
+          <Transition name="zoom" appear>
+            <section
+              v-if="isExpanded"
+              class="expanded-image"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="image-title"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+                alt="A Cat!"
+              />
+
+
+              <!-- Bottom-right close control -->
+              <button
+                class="close-button"
+                type="button"
+                @click="closeImage"
+                aria-label="Close expanded image"
+                title="Close image"
+              >
+                <span class="material-icons" aria-hidden="true">
+                  close
+                </span>
+              </button>
+            </section>
+          </Transition>
+        </div>
+      </Transition>
+    </main>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          isExpanded: false
+        };
+      },
+
+      methods: {
+        openImage() {
+          this.isExpanded = true;
+        },
+
+        closeImage() {
+          this.isExpanded = false;
+        }
+      },
+
+      mounted() {
+        this.handleEscape = (event) => {
+          if (event.key === "Escape") {
+            this.closeImage();
+          }
+        };
+
+        window.addEventListener("keydown", this.handleEscape);
+      },
+
+      beforeUnmount() {
+        window.removeEventListener("keydown", this.handleEscape);
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

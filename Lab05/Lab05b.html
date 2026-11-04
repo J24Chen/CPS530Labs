@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 05b Jchen</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin>
+    </script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin>
+    </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js">
+    </script>
+
+
+<style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body, #root {
+      margin: 0;
+      width: 100%;
+      max-height: 100%;
+    }
+
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: #080d18;
+      color: #f8fafc;
+    }
+
+    .clock-screen {
+      min-height: 95dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at center, #17243b 0%, #080d18 72%);
+      overflow: hidden;
+    }
+
+    .clock-label {
+      color: #94a3b8;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .time {
+      font-size: clamp(2.8rem, 13.5vw, 10rem);
+      font-weight: 750;
+      letter-spacing: -0.065em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      color: #ffffff;
+      text-shadow: 0 0 36px rgb(56 189 248 / 18%);
+    }
+
+    .separator {
+      color: #38bdf8;
+      animation: pulse 3s steps(20, start) infinite;
+    }
+
+    .date {
+      margin-top: 2.25rem;
+      color: #cbd5e1;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      font-weight: 400;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: 3rem;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 12px #4ade8080;
+    }
+
+    @keyframes pulse {
+      50% { opacity: 0.35; }
+    }
+
+    @media (max-width: 480px) {
+      .clock-screen {
+        padding: 16px;
+      }
+
+      .clock-label {
+        margin-bottom: 1.5rem;
+      }
+
+      .date {
+        margin-top: 1.5rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .separator {
+        animation: none;
+      }
+    }
+
+    footer {
+        text-align: center;
+    }
+    footer:before {
+        content:"\00a9";
+
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function DigitalClock() {
+      const [now, setNow] = useState(() => new Date());
+
+      useEffect(() => {
+        // Update the clock every second.
+        const intervalId = setInterval(() => {
+          setNow(new Date());
+        }, 1000);
+
+        // Clean up the interval when the component unmounts.
+        return () => clearInterval(intervalId);
+      }, []);
+
+      const pad = (value) => String(value).padStart(2, "0");
+
+      const hours = pad(now.getHours());
+      const minutes = pad(now.getMinutes());
+      const seconds = pad(now.getSeconds());
+
+      const formattedDate = new Intl.DateTimeFormat(
+        undefined,
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        }
+      ).format(now);
+
+      return (
+        <main className="clock-screen">
+          <div className="clock-label">
+            Local Time
+          </div>
+
+          <time
+            className="time"
+            dateTime={now.toISOString()}
+            aria-label={`Current time: ${hours}:${minutes}:${seconds}`}
+          >
+            <span>{hours}</span>
+            <span className="separator">:</span>
+            <span>{minutes}</span>
+            <span className="separator">:</span>
+            <span>{seconds}</span>
+          </time>
+
+          <div className="date">
+            {formattedDate}
+          </div>
+
+          <div className="status" role="status">
+            <span className="status-dot"></span>
+            Live clock
+          </div>
+        </main>
+      );
+    }
+
+    const root = ReactDOM.createRoot(
+      document.getElementById("root")
+    );
+
+    root.render(<DigitalClock />);
+  </script>
+  <footer>Jason Chen 2026</footer>
+</body>
+</html>
