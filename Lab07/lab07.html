@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lab07 JChen</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+
+</head>
+<body>
+    
+    <form class="p-5 flex justify-center items-center gap-4" method="post">
+        <p class="block mb-2.5 text-sm font-medium text-heading">City:</p>
+        <input class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block  px-3 py-2.5 shadow-xs placeholder:text-body" type="text" name="city">
+        <p class="block mb-2.5 text-sm font-medium text-heading">Country:</p>
+        <select class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block  px-3 py-2.5 shadow-xs placeholder:text-body" type="text" name="country" id="countries">
+            <option value="USA">USA</option>
+            <option value="Canada">Canada</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Jamaica">Jamaica</option>
+            <option value="Argentina">Argentina</option>
+            <option value="France">France</option>
+            <option value="Spain">Spain</option>
+            <option value="China">China</option>
+            <option value="Japan">Japan</option>
+        </select>
+        <p class="block mb-2.5 text-sm font-medium text-heading">Image Link (URL):</p>
+        <input class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block  px-3 py-2.5 shadow-xs placeholder:text-body" type="text" name="url">
+        <div class="p-5">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" value="Submit to Perl" formaction="cgi-bin/lab07b.cgi">
+                Submit to Perl
+            </button>
+            <button class="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded" type="submit" value="Submit to AGI" formaction="cgi-bin/lab07.asp">
+                Submit to AGI
+            </button>
+        </div>
+        
+    </form>
+</body>
+</html>
