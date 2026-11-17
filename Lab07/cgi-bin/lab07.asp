@@ -58,6 +58,8 @@
 
 </head>
 <body>
+    <div class ="container">
+        <div class="card">
     <%
     city = Request.Form("city")
     country = Request.Form("country")
@@ -65,7 +67,7 @@
 
     Function IsValidCity(city)
         Set regEx = new RegExp
-        regEx.Pattern = "/^[a-zA-Z '-]+$/" 
+        regEx.Pattern = "^[a-zA-Z '-]+$" 
         regEx.IgnoreCase = true 
         regEx.Global = true
     
@@ -77,12 +79,14 @@
 
         Response.Write("<h1 class='country'>" & country & "</h1>")
         Response.Write("<h1 class='city'>" & city & "</h1>")
-        Response.Write("<img src='" & url & "' alt='City image'>")
+        Response.Write("<img src='" & url & "' alt='Image of your City!'>")
 
     Else 
         Response.Write("<h1>Invalid City, please try again. </h1>")
 
 End If
     %>
+        </div
+    </div>
 </body>
 </html>
