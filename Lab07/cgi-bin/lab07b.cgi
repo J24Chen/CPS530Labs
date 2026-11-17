@@ -1,5 +1,4 @@
-#!D:/Strawberry/perl/bin/perl.exe
-
+#!/usr/bin/perl -T
 use warnings;
 use CGI':standard';
 use CGI::Carp qw(warningsToBrowser fatalsToBrowser);

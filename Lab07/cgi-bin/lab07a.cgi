@@ -1,4 +1,4 @@
-#!D:/Strawberry/perl/bin/perl.exe
+#!/usr/bin/perl -T
 
 
 
